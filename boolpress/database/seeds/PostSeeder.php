@@ -24,6 +24,7 @@ class PostSeeder extends Seeder
             $userCount = Count(User::all()->toArray());
             //newPost sulla colonna user_id
             $newPost->user_id = rand(1,$userCount);
+            //QUESTA STRATEGIA SOLO SE TESTIAMO CON I SEEDERS
 
             //salviamo nella variabile lo slug costruito dal title
             $slug = Str::slug($newPost->title);
