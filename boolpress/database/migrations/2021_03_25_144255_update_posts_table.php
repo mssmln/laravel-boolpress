@@ -14,11 +14,12 @@ class UpdatePostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
+            //1 metodo
             //$table->unsignedBigInteger('user_id')->nullable(); //creo la colonna
+            //$table->foreign('user_id')->references('id')->on('users'); //creo la relazione
 
-            //$table->foreign('user_id')->references('id')->on('users');
-
-            $table->foreignId('user_id')->nullable()->constrained();
+            //2 metodo
+            $table->foreignId('user_id')->after('id')->nullable()->constrained(); //crea e relaziona
         });
     }
 
@@ -30,8 +31,8 @@ class UpdatePostsTable extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropColumn('user_id');
+            $table->dropForeign(['user_id']); //rimuove la relazione
+            $table->dropColumn('user_id'); //rimuove la colonna
         });
     }
 }

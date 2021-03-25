@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Faker\Generator as Faker; // model faker to add
 use App\Post; // model nostro to add so we can instance
 use Illuminate\Support\Str; // model slug to add
+use App\User;
 
 class PostSeeder extends Seeder
 {
@@ -18,6 +19,11 @@ class PostSeeder extends Seeder
             $newPost = new Post();
             $newPost->title = $faker->sentence(2);
             $newPost->content = $faker->text(500);
+
+            //in una variabile selezioniamo tutti gli user esistenti ma trattandosi di una collection usiamo toArray per convertirlo in un array e poi facciamo il Count
+            $userCount = Count(User::all()->toArray());
+            //newPost sulla colonna user_id
+            $newPost->user_id = rand(1,$userCount);
 
             //salviamo nella variabile lo slug costruito dal title
             $slug = Str::slug($newPost->title);
