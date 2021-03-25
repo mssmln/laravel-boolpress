@@ -18,7 +18,27 @@ class PostSeeder extends Seeder
             $newPost = new Post();
             $newPost->title = $faker->sentence(2);
             $newPost->content = $faker->text(500);
-            $newPost->slug = Str::slug($newPost->title); // usiamo lo slug per la prima volta , popolerà l'uri con un - tra le parole
+
+            //salviamo nella variabile lo slug costruito dal title
+            $slug = Str::slug($newPost->title);
+            //verifichiamo se nella table posts alla colonna slug troviamo il valore di $slug , il ::where vuole il ->first()
+            $lookForSlug = Post::where('slug',$slug)->first();
+            //un counter per incrementare qualora ci fossero stessi slug
+            $counter = 1;
+            //ci salviamo il primo slug per non incorrere in slug come prova-1-2 prova-1-2-3 ...
+            $slugFirst = $slug;
+            //non sappiamo quando si genererà lo slug identico, usiamo quindi while con la condizione di trovare lo slug nella colonna
+            while($lookForSlug){
+                //se lo trova, dallo slug first aggiungiamo -counter
+                $slug = $slugFirst . '-' .$counter;
+                //verifichiamo se ne trova altri di stessi slug
+                $lookForSlug = Post::where('slug',$slug)->first();
+                //incrementiamo per il prossimo stesso slug
+                $counter++;
+            }
+            
+            //adesso lo salviamo nella definitiva variabile
+            $newPost->slug = $slug;
             $newPost->save();
         }
     }
