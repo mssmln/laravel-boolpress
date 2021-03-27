@@ -9,6 +9,13 @@ così svuota la memoria cache! Appuntiamo anche questo :sweat_smile:*/
     Create il controller PostController per la visualizzazione dei post e dei dettagli, per ora solo lato guest.
     Personalizzate le views.*/
 
+
+/* 3 milestone:     Create la tabella tags con il relativo model.
+    Create la relazione tra le tabelle tags e posts e la relazione anche tra model.
+    Popolate la tabella tags con i seeder.
+    Create il controller PostController nella sezione Admin per la gestione dei post, lato admin.
+    Personalizzate le views.*/
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
