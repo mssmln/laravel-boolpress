@@ -19,6 +19,14 @@
             <label for="content"></label>
             <textarea name="content" class="form-control" aria-label="With textarea"></textarea>
         </div>
+        <!-- area dei tag  -->
+        @foreach($tags as $tag)
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="tags[]" value="{{$tag->id}}">
+            <label class="form-check-label" for="exampleCheck1">{{$tag->name}}</label>
+        </div>
+        @endforeach
+        <!-- / area dei tag  -->
         <button type="submit" class="btn btn-success">create</button>
     </form>
 </div>

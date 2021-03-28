@@ -27,7 +27,12 @@
         <td>{{ $post->updated_at }}</td>
         <td><button type="button" class="btn btn-info"><a href="{{route('post.show',$post->id)}}">view</a></button></td>
         <td><button type="button" class="btn btn-warning"><a href="{{route('post.edit',$post->id)}}">edit</a></button></td>
-        <td><button type="button" class="btn btn-danger">delete</button></td>
+        <td><form action="{{route('post.destroy', $post->id) }}" method="post">
+          @csrf
+          @method('DELETE')
+          <button type="sumbit" class="btn btn-danger">delete</button>
+          </form>
+        </td>
     </tr>
     @endforeach
   </tbody>

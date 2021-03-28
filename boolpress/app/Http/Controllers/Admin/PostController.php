@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -32,7 +33,12 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.post.create');
+        $tags = Tag::all();
+        // dd($tags);
+        $data = [
+            'tags' => $tags
+        ];
+        return view('admin.post.create',$data);
     }
 
     /**
@@ -51,6 +57,9 @@ class PostController extends Controller
         $newPost->slug = Str::slug($data['title']);
         $newPost->fill($data);
         $newPost->save();
+        if(array_key_exists('tags',$data)){
+            $newPost->tags()->sync($data['tags']);
+        }
         return redirect()->route('post.create');
     }
 
@@ -76,9 +85,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $tags = Tag::all();
         if ($post){ 
             $data = [
-                'posts' => $post
+                'posts' => $post,
+                'tag' => $tags
             ];
             return view('admin.post.edit',$data); 
         }
@@ -96,6 +107,9 @@ class PostController extends Controller
     {
         $data = $request->all();
         $post->update($data);
+        if(array_key_exists('tags',$data)){
+            $post->tags()->sync($data['tags']);
+        }
 
         return redirect()->route('post.index',$post);
     }
@@ -106,8 +120,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->tags()->sync([]); //dobbiamo eliminare tutti i tag associati al post prima di poter eliminare il post, se lo facciamo dopo la delete non trova le chiavi primarie, gli diciamo di fare il sync con l'insieme vuoto 
+        $post->delete();
+        return redirect()->route('post.index');
     }
 }
