@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Lead;
 
 class HomeController extends Controller
 {
@@ -24,5 +25,19 @@ class HomeController extends Controller
     public function index()
     {
         return view('guest.home');
+    }
+
+    public function contact(){
+        return view('guest.contact');
+    }
+
+    public function contactSent(Request $request){
+        $data = $request->all();
+        // dd($data);
+
+        $newLead = new Lead();
+        $newLead->fill($data); // because of fillable
+        $newLead->save();
+        return redirect()->route('guest.contact')->with('status','email sent');
     }
 }
