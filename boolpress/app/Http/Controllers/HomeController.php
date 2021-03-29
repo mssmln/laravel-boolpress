@@ -41,7 +41,7 @@ class HomeController extends Controller
         $newLead->fill($data); // because of fillable
         $newLead->save();
         $recipient = env('MAIL_FROM_ADDRESS'); // env permette di accedere alle info di .env 
-        Mail::to($recipient)->send(new SendNewMail());
+        Mail::to($recipient)->send(new SendNewMail($newLead));
         // fa il send di una istanza di SendNewMail che recupera la view dalla funzione build
         return redirect()->route('guest.contact')->with('status','email sent');
     }

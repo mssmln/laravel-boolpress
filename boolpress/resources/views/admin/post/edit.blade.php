@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <form action="{{ route('post.update', $posts->id) }}" method="post">
+    <form action="{{ route('post.update', $posts->id) }}" method="post" enctype="multipart/form-data">
         @csrf 
         @method('PUT')
             <div class="input-group input-group-sm mb-3 ">
@@ -12,6 +12,20 @@
                 <label for="title"></label>
                 <input name="title" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{$posts->title}}">
             </div>
+            <!-- vecchia img caricata -->
+            @if($posts->cover)
+                <p>immagine inserita</p>
+                <img src="{{asset('storage/'.$posts->cover)}}" alt="{{$posts->title}}">
+            @else
+                <p>nessuna immagine</p>
+            @endif
+            <!-- /vecchia img caricata -->
+            <!-- upload an img file  -->
+            <div class="form-group">
+                <label for="img">edit img</label>
+                <input type="file" class="form-control-file" id="img" name="image">
+            </div>
+            <!-- / upload an img file  -->
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">body new post</span>

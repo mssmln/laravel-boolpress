@@ -8,7 +8,7 @@
       <th scope="col">TITLE</th>
       <th scope="col">USER ID</th>
       <th scope="col">BODY</th>
-      <th scope="col">CREATED AT</th>
+      <th scope="col">IMG</th>
       <th scope="col">UPDATED AT</th>
     </tr>
   </thead>
@@ -18,7 +18,7 @@
         <td>{{ $posts->title }}</td>
         <td>{{ $posts->user->name }}</td>
         <td>{{ $posts->content }}</td>
-        <td>{{ $posts->created_at }}</td>
+        <td><img src="{{ asset('storage/'.$posts->cover) }}"></td>
         <td>{{ $posts->updated_at }}</td>
         <td><button type="button" class="btn btn-warning">edit</button></td>
         <td><button type="button" class="btn btn-danger">delete</button></td>

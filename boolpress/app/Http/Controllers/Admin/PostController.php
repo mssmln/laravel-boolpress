@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
 use App\Tag;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,8 @@ class PostController extends Controller
         $newPost->user_id = $authUser;
         $newPost->slug = Str::slug($data['title']);
         $newPost->fill($data);
+        $data['cover'] = Storage::put('post_covers',$data['image']); //post_covers è la cartella che verrà creata nella root di storage , image si riferisce all'attributo name="image" nel tag html input con attributo type="file" per upload
+        $newPost->cover = $data['cover']; // se inserisci cover nelle fillable questa riga non serve 
         $newPost->save();
         if(array_key_exists('tags',$data)){
             $newPost->tags()->sync($data['tags']);
@@ -106,6 +109,18 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $data = $request->all();
+        // controllo if per update slug solo se cambia il title
+        if($data['title'] != $post->title){
+            $data['slug'] = Str::slug($data['title']);
+        }
+
+        // controllo if per evitare l'errore del undefined index image
+        if(array_key_exists('image',$data)){
+            $cover_path = Storage::put('post_covers',$data['image']); 
+            $data['cover'] = $cover_path;
+            // dd($data['cover']);
+        }
+        
         $post->update($data);
         if(array_key_exists('tags',$data)){
             $post->tags()->sync($data['tags']);

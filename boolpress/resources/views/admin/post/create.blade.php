@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <form action="{{ route('post.store') }}" method="post">
+    <form action="{{ route('post.store') }}" method="post" enctype="multipart/form-data">
     @csrf 
     @method('POST')
         <div class="input-group input-group-sm mb-3 ">
@@ -12,6 +12,12 @@
             <label for="title"></label>
             <input name="title" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
         </div>
+        <!-- upload an img file  -->
+        <div class="form-group">
+            <label for="img">choose img</label>
+            <input type="file" class="form-control-file" id="img" name="image">
+        </div>
+        <!-- / upload an img file  -->
         <div class="input-group">
             <div class="input-group-prepend">
                 <span class="input-group-text">body new post</span>
